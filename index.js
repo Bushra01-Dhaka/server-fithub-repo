@@ -27,6 +27,21 @@ async function run() {
 
     const classesCollection = client.db("fithubDB").collection("classes");
     const photoCollection = client.db("fithubDB").collection("gallery");
+    const trainerCollection = client.db("fithubDB").collection("trainers");
+
+    //trainer api
+    app.post('/trainers', async(req, res) => {
+      const trainer = req.body;
+      const result = await trainerCollection.insertOne(trainer);
+      res.send(result);
+    })
+
+    app.get("/trainers", async (req, res) => {
+      const result = await trainerCollection.find().toArray();
+      res.send(result);
+    });
+
+    
 
     //gallery api
     //   app.get('/gallery', async(req, res) => {
@@ -34,6 +49,7 @@ async function run() {
     //     res.send(result);
     // })
 
+    //gallery api with pagination
     const PAGE_SIZE = 12; // Adjust this value based on the number of images you want to fetch per page
 
     app.get("/gallery", async (req, res) => {
