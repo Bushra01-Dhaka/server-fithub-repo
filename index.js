@@ -41,13 +41,14 @@ async function run() {
       res.send(result);
     });
 
-    
+    app.get("/trainers/:id", async(req, res) => {
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)};
+      const result = await trainerCollection.findOne(query);
+      res.send(result);
+    })
 
-    //gallery api
-    //   app.get('/gallery', async(req, res) => {
-    //     const result = await photoCollection.find().toArray();
-    //     res.send(result);
-    // })
+    
 
     //gallery api with pagination
     const PAGE_SIZE = 12; // Adjust this value based on the number of images you want to fetch per page
