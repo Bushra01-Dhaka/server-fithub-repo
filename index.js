@@ -28,6 +28,22 @@ async function run() {
     const classesCollection = client.db("fithubDB").collection("classes");
     const photoCollection = client.db("fithubDB").collection("gallery");
     const trainerCollection = client.db("fithubDB").collection("trainers");
+    const newsletterCollection = client.db("fithubDB").collection("newsletter");
+    const trainerPackageCollection = client.db("fithubDB").collection("packages");
+
+    //package Api
+    app.post('/packages', async(req, res) => {
+      const package = req.body;
+      const result = await trainerPackageCollection.insertOne(package);
+      res.send(result);
+    });
+
+    //newsletter api
+    app.post("/newsletter", async(req, res) => {
+      const subscriber = req.body;
+      const result = await newsletterCollection.insertOne(subscriber);
+      res.send(result);
+    })
 
     //trainer api
     app.post('/trainers', async(req, res) => {
