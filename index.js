@@ -31,6 +31,28 @@ async function run() {
     const newsletterCollection = client.db("fithubDB").collection("newsletter");
     const trainerPackageCollection = client.db("fithubDB").collection("packages");
     const blogCollection = client.db("fithubDB").collection("blogs");
+    const userCollection = client.db("fithubDB").collection("users");
+
+
+
+    //users related api 
+    app.post('/users', async(req, res) => {
+      const user = req.body;
+      //insert email jodi user na thake
+      const query = { email: user.email };
+      const existingUser = await userCollection.findOne(query);
+      if (existingUser) {
+        return res.send({ message: "user already exist", insertedId: null });
+      }
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    })
+
+
+
+
+
+
 
     //blog api
     app.get("/blogs", async (req, res) => {
