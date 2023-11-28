@@ -30,6 +30,14 @@ async function run() {
     const trainerCollection = client.db("fithubDB").collection("trainers");
     const newsletterCollection = client.db("fithubDB").collection("newsletter");
     const trainerPackageCollection = client.db("fithubDB").collection("packages");
+    const blogCollection = client.db("fithubDB").collection("blogs");
+
+    //blog api
+    app.get("/blogs", async (req, res) => {
+      const result = await blogCollection.find().toArray();
+      res.send(result);
+    });
+
 
     //package Api
     app.post('/packages', async(req, res) => {
@@ -37,6 +45,13 @@ async function run() {
       const result = await trainerPackageCollection.insertOne(package);
       res.send(result);
     });
+
+    app.get('/packages', async(req, res) => {
+      const email = req.query.email;
+      const query = {userEmail : email}
+      const result = await trainerPackageCollection.find(query).toArray();
+      res.send(result);
+    })
 
     //newsletter api
     app.post("/newsletter", async(req, res) => {
