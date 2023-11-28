@@ -46,9 +46,26 @@ async function run() {
       }
       const result = await userCollection.insertOne(user);
       res.send(result);
+    });
+
+    app.get('/users', async(req, res) => {
+      const result = await userCollection.find().toArray();
+      res.send(result);
     })
 
 
+    app.patch("/users/admin/:id", async(req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updatedDocs = {
+        $set: {
+          role: "admin",
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedDocs);
+      res.send(result);
+
+    })
 
 
 
@@ -79,6 +96,11 @@ async function run() {
     app.post("/newsletter", async(req, res) => {
       const subscriber = req.body;
       const result = await newsletterCollection.insertOne(subscriber);
+      res.send(result);
+    });
+
+    app.get("/newsletter", async(req, res) => {
+      const result = await newsletterCollection.find().toArray();
       res.send(result);
     })
 
