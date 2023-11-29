@@ -120,6 +120,19 @@ async function run() {
 
     })
 
+     //update trainer role
+     app.patch("/trainers/:id", async(req, res) => {
+       const id = req.params.id;
+       const filter = {_id: new ObjectId(id)};
+       const updatedDocs = {
+        $set: {
+          status: "trainer",
+        },
+       };
+       const result = await trainerCollection.updateOne(filter, updatedDocs);
+       res.send(result);
+     })
+
 
 
 
@@ -181,6 +194,8 @@ async function run() {
       const result = await trainerCollection.findOne(query);
       res.send(result);
     })
+
+   
 
     
 
