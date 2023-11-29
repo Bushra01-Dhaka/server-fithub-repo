@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const classesCollection = client.db("fithubDB").collection("classes");
     const photoCollection = client.db("fithubDB").collection("gallery");
@@ -157,6 +157,11 @@ async function run() {
       res.send(result);
     });
 
+    // app.get('/packages', async(req, res) => {
+    //   const result = await trainerPackageCollection.find().toArray();
+    //   res.send(result);
+    // })
+
     app.get('/packages', async(req, res) => {
       const email = req.query.email;
       const query = {userEmail : email}
@@ -232,11 +237,34 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/admin-stats', async(req,res) => {
+      const users = await userCollection.estimatedDocumentCount();
+      const subscriber = await newsletterCollection.estimatedDocumentCount();
+      const paidUser = await trainerPackageCollection.estimatedDocumentCount();
+      const totalTrainers = await trainerCollection.estimatedDocumentCount();
+     
+
+      res.send({
+        users,
+        subscriber,
+        paidUser,
+        totalTrainers,
+       
+      })
+    })
+
+
+
+
+
+
+
+
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
